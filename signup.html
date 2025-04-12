@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | SafeWeb Jr.</title>
+  <link rel="stylesheet" href="styles7.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAAoUylX2gqffF_Rq0oOi7ggcaQS3xt30M",
+      authDomain: "safewebjr.firebaseapp.com",
+      projectId: "safewebjr",
+      storageBucket: "safewebjr.appspot.com",
+      messagingSenderId: "805994437090",
+      appId: "1:805994437090:web:2184304176c1ce231181bb"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Signup function
+    window.signup = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Signup successful! Now log in.");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+        });
+    };
+  </script>
+</head>
+
+<body class="kid">
+  <!-- Theme toggle -->
+  <div class="toggle-container">
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider"></span>
+    </label>
+    <span id="modeLabel">Kid Mode</span>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="signup-container">
+    <div class="signup-box">
+      <h2>Sign Up</h2>
+      <input type="email" id="email" placeholder="Email" /><br /><br />
+      <input type="password" id="password" placeholder="Password" /><br /><br />
+      <button onclick="signup()">Sign Up</button>
+    </div>
+  </div>
+
+  <!-- Theme toggle logic -->
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const label = document.getElementById('modeLabel');
+    const body = document.body;
+
+    toggle.addEventListener('change', () => {
+      const isKidMode = !toggle.checked;
+      body.className = isKidMode ? 'kid' : 'adult';
+      label.textContent = isKidMode ? 'Kid Mode' : 'Adult Mode';
+    });
+  </script>
+</body>
+</html>
