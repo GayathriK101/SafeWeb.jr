@@ -1,6 +1,5 @@
 # SafeWeb.jr
 Protect your kids online - RESPECTFULLY !!
-# SafeWebJr
 
 *SafeWebJr* is an early-stage child safety monitoring project designed to help parents protect their kids from explicit content and online threats — with ethics and empathy at the core.  
 
