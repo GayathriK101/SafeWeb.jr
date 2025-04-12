@@ -15,6 +15,7 @@
         <a href="#features">Features</a>
         <a href="#download">Download</a>
         <a href="login.html">Login</a>
+        <a href="signup.html">Sign Up</a>
       </nav>
 
       <!-- Theme toggle -->
@@ -65,7 +66,10 @@
 
   <footer>
     <div class="container">
-      <p>&copy; 2025 SafeWeb Jr. | <a href="login.html">Login</a></p>
+      <p>&copy; 2025 SafeWeb Jr. |
+        <a href="login.html">Login</a> |
+        <a href="signup.html">Sign Up</a>
+      </p>
     </div>
   </footer>
 
@@ -80,5 +84,20 @@
       label.textContent = isKidMode ? 'Kid Mode' : 'Adult Mode';
     });
   </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyAAoUylX2gqffF_Rq0oOi7ggcaQS3xt30M",
+      authDomain: "safewebjr.firebaseapp.com",
+      projectId: "safewebjr",
+      storageBucket: "safewebjr.firebasestorage.app",
+      messagingSenderId: "805994437090",
+      appId: "1:805994437090:web:2184304176c1ce231181bb"
+    };
+    const app = initializeApp(firebaseConfig);
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+  <script src="firebase-init.js"></script>
 </body>
 </html>
