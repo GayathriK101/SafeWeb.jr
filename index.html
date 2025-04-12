@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeWeb Jr.</title>
+  <link rel="stylesheet" href="styles7.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="kid">
+  <header>
+    <div class="container nav">
+      <h1 class="logo">SafeWeb Jr.</h1>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#download">Download</a>
+        <a href="login.html">Login</a>
+      </nav>
+
+      <!-- Theme toggle -->
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" id="themeToggle" />
+          <span class="slider"></span>
+        </label>
+        <span id="modeLabel">Kid Mode</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <h2>Safety meets trust</h2>
+      <p>Protect your kids online — <strong>respectfully</strong>.</p>
+      <a href="#download" class="btn-primary">Download Extension</a>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="container">
+      <h2>Key Features</h2>
+      <div class="feature-cards">
+        <div class="card">
+          <h3>Smart Alerts</h3>
+          <p>Flags risky keywords or emotional tone in chats or searches.</p>
+        </div>
+        <div class="card">
+          <h3>Shared Transparency</h3>
+          <p>Kids can see what's being flagged too — no secrets.</p>
+        </div>
+        <div class="card">
+          <h3>Custom Controls</h3>
+          <p>Parents decide what gets flagged and when to be notified.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" class="download">
+    <div class="container">
+      <h2>Coming Soon</h2>
+      <p>We're working hard. Stay tuned for our Chrome extension launch!</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 SafeWeb Jr. | <a href="login.html">Login</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const label = document.getElementById('modeLabel');
+    const body = document.body;
+
+    toggle.addEventListener('change', () => {
+      const isKidMode = !toggle.checked;
+      body.className = isKidMode ? 'kid' : 'adult';
+      label.textContent = isKidMode ? 'Kid Mode' : 'Adult Mode';
+    });
+  </script>
+</body>
+</html>
