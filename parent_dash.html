@@ -41,31 +41,51 @@
     </div>
   </div>
 
-  <script>
-    // Load flagged alerts
-    chrome.storage.local.get(["flagged"], function(result) {
-      const alerts = result.flagged || [];
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { db, collection, getDocs } from "./firebase-config.js";
+
+    async function loadAlerts() {
       const alertsList = document.getElementById("alertsList");
       const monitorStatus = document.getElementById("monitorStatus");
       const scoreElement = document.getElementById("score");
 
-      alertsList.innerHTML = "";
-      if (alerts.length === 0) {
-        alertsList.innerHTML = "<li>No alerts at the moment.</li>";
-        monitorStatus.textContent = "No explicit or suspicious content flagged recently.";
-        scoreElement.textContent = "Score: 100 / 100 — Excellent behavior!";
-      } else {
-        alerts.slice(-5).reverse().forEach(alert => {
-          const li = document.createElement("li");
-          li.textContent = ⚠ ${alert.words.join(", ")} on ${alert.url} at ${new Date(alert.timestamp).toLocaleString()};
-          alertsList.appendChild(li);
+      alertsList.innerHTML = "<li>Loading...</li>";
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "flaggedContent"));
+        const alerts = [];
+        querySnapshot.forEach((doc) => {
+          alerts.push(doc.data());
         });
 
-        monitorStatus.textContent = 🚨 ${alerts.length} flagged incident(s) in total.;
-        const score = Math.max(100 - alerts.length * 5, 50);
-        scoreElement.textContent = Score: ${score} / 100 — Monitor regularly.;
+        alertsList.innerHTML = "";
+
+        if (alerts.length === 0) {
+          alertsList.innerHTML = "<li>No alerts at the moment.</li>";
+          monitorStatus.textContent = "No explicit or suspicious content flagged recently.";
+          scoreElement.textContent = "Score: 100 / 100 — Excellent behavior!";
+        } else {
+          alerts
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .slice(0, 5)
+            .forEach((alert) => {
+              const li = document.createElement("li");
+              li.textContent = ⚠ ${alert.words.join(", ")} on ${alert.url} at ${new Date(alert.timestamp).toLocaleString()};
+              alertsList.appendChild(li);
+            });
+
+          monitorStatus.textContent = 🚨 ${alerts.length} flagged incident(s) in total.;
+          const score = Math.max(100 - alerts.length * 5, 50);
+          scoreElement.textContent = Score: ${score} / 100 — Monitor regularly.;
+        }
+      } catch (error) {
+        alertsList.innerHTML = "<li>Error loading alerts.</li>";
+        console.error("Error fetching alerts:", error);
       }
-    });
+    }
+
+    window.onload = loadAlerts;
   </script>
 </body>
 </html>
