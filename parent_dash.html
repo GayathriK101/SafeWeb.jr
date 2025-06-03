@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Parent Dashboard - SafeWebJr</title>
+  <title>Parent Dashboard - SaveWebJr</title>
   <link rel="stylesheet" href="parent-dashboard.css" />
 </head>
 <body>
@@ -12,19 +12,19 @@
 
     <div class="card">
       <h2>Kid’s Behavior Score</h2>
-      <p>Score: 82 / 100 — Healthy habits!</p>
+      <p id="score">Loading...</p>
     </div>
 
     <div class="card">
       <h2>Recent Alerts</h2>
-      <ul>
-        <li>No alerts at the moment.</li>
+      <ul id="alertsList">
+        <li>Loading...</li>
       </ul>
     </div>
 
     <div class="card">
       <h2>Content Sensitivity Monitor</h2>
-      <p>No explicit or suspicious content flagged recently.</p>
+      <p id="monitorStatus">Loading...</p>
     </div>
 
     <div class="card">
@@ -39,7 +39,33 @@
         <li>“Want to show me a site you liked recently?”</li>
       </ul>
     </div>
-
   </div>
+
+  <script>
+    // Load flagged alerts
+    chrome.storage.local.get(["flagged"], function(result) {
+      const alerts = result.flagged || [];
+      const alertsList = document.getElementById("alertsList");
+      const monitorStatus = document.getElementById("monitorStatus");
+      const scoreElement = document.getElementById("score");
+
+      alertsList.innerHTML = "";
+      if (alerts.length === 0) {
+        alertsList.innerHTML = "<li>No alerts at the moment.</li>";
+        monitorStatus.textContent = "No explicit or suspicious content flagged recently.";
+        scoreElement.textContent = "Score: 100 / 100 — Excellent behavior!";
+      } else {
+        alerts.slice(-5).reverse().forEach(alert => {
+          const li = document.createElement("li");
+          li.textContent = ⚠ ${alert.words.join(", ")} on ${alert.url} at ${new Date(alert.timestamp).toLocaleString()};
+          alertsList.appendChild(li);
+        });
+
+        monitorStatus.textContent = 🚨 ${alerts.length} flagged incident(s) in total.;
+        const score = Math.max(100 - alerts.length * 5, 50);
+        scoreElement.textContent = Score: ${score} / 100 — Monitor regularly.;
+      }
+    });
+  </script>
 </body>
 </html>
