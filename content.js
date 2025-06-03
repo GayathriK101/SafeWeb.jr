@@ -1,4 +1,6 @@
-const badWords = ["kill", "useless", "suicide", "hate", "idiot", "dumb", "porn"];
+import { db, collection, addDoc } from "./firebase-config.js";
+
+const badWords = ["kill", "useless", "suicide", "hate", "idiot", "dumb", "porn"]; // list of bad words to flag
 
 function scanPage() {
   const bodyText = document.body.innerText.toLowerCase();
@@ -14,24 +16,16 @@ function scanPage() {
     const flaggedData = {
       timestamp: new Date().toISOString(),
       url: window.location.href,
-      words: flaggedWords,
+      words: flaggedWords
     };
 
-    chrome.storage.local.get({ flagged: [] }, function (result) {
-      const updated = result.flagged || [];
-      updated.push(flaggedData);
-      chrome.storage.local.set({ flagged: updated }, () => {
-        console.log("⚠ Inappropriate content flagged:", flaggedData);
-
-        // Notify background.js
-        chrome.runtime.sendMessage({
-          type: "flagged",
-          data: flaggedData,
-        });
-      });
-    });
+    // Save to Firestore
+    addDoc(collection(db, "flaggedContent"), flaggedData)
+      .then(() => console.log("✅ Flagged content sent to Firestore"))
+      .catch((error) => console.error("❌ Firestore error:", error));
   }
 }
 
+// Run the scan after 3 seconds to ensure page is loaded
 setTimeout(scanPage, 3000);
-console.log("✅ Extension running successfully");
+console.log("Extension running successfully");
